@@ -3,6 +3,9 @@
 *.tar.gz
 *.rar
 
+# Exception: Allow distribution files
+!dist/*.zip
+
 # Build artifacts
 plugin-base64.txt
 *.b64
