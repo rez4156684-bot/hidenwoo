@@ -1,0 +1,352 @@
+/**
+ * استایل‌های باکس رزرو ووکامرس
+ * WooCommerce Booking Box Styles
+ */
+
+/* کانتینر اصلی */
+.wc-booking-box-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    direction: rtl;
+    text-align: right;
+}
+
+/* عنوان محصول */
+.wc-booking-box-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 20px 0;
+    padding: 0;
+    line-height: 1.4;
+}
+
+/* قیمت محصول */
+.wc-booking-box-price {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.wc-booking-box-price .price {
+    color: #27ae60;
+}
+
+.wc-booking-box-price del {
+    opacity: 0.6;
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.wc-booking-box-price ins {
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* شناسه محصول (SKU) */
+.wc-booking-box-sku {
+    margin: 0 0 15px 0;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.wc-booking-box-sku .sku-label {
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+/* موجودی انبار */
+.wc-booking-box-stock {
+    margin: 0 0 20px 0;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.wc-booking-box-stock .stock {
+    display: inline-block;
+}
+
+.wc-booking-box-stock .in-stock {
+    color: #27ae60;
+    background: #d4edda;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.wc-booking-box-stock .out-of-stock {
+    color: #e74c3c;
+    background: #f8d7da;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* فرم افزودن به سبد */
+.wc-booking-box-form {
+    margin: 25px 0;
+    padding: 20px 0;
+    border-top: 1px solid #f0f0f0;
+}
+
+.wc-booking-box-form form.cart {
+    margin: 0;
+}
+
+/* فیلدهای فرم */
+.wc-booking-box-form .quantity {
+    margin: 0 0 20px 0;
+}
+
+.wc-booking-box-form .quantity label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.wc-booking-box-form .quantity input[type="number"] {
+    width: 100px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* محصولات متغیر */
+.wc-booking-box-form .variations {
+    margin: 0 0 20px 0;
+}
+
+.wc-booking-box-form .variations tr {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.wc-booking-box-form .variations td,
+.wc-booking-box-form .variations th {
+    display: block;
+    padding: 0;
+}
+
+.wc-booking-box-form .variations label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.wc-booking-box-form .variations select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.wc-booking-box-form .variations .reset_variations {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #666;
+    text-decoration: underline;
+}
+
+/* دکمه افزودن به سبد */
+.wc-booking-box-form button.single_add_to_cart_button {
+    width: 100%;
+    padding: 15px 30px;
+    background-color: #27ae60;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wc-booking-box-form button.single_add_to_cart_button:hover {
+    background-color: #229954;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.wc-booking-box-form button.single_add_to_cart_button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* متای محصول */
+.wc-booking-box-meta {
+    margin: 20px 0 0 0;
+    padding: 20px 0 0 0;
+    border-top: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: #666;
+}
+
+.wc-booking-box-meta > span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.wc-booking-box-meta a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.wc-booking-box-meta a:hover {
+    text-decoration: underline;
+}
+
+/* پیام‌های خطا */
+.wc-booking-box-error {
+    padding: 15px 20px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* پشتیبانی از فیلدهای سفارشی و تقویم */
+.wc-booking-box-form .wc-bookings-date-picker,
+.wc-booking-box-form .wc-booking-product-addons,
+.wc-booking-box-form .product-addon,
+.wc-booking-box-form .wc-pao-addon-container {
+    margin: 20px 0;
+}
+
+.wc-booking-box-form .wc-bookings-date-picker label,
+.wc-booking-box-form .product-addon-title {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.wc-booking-box-form .wc-bookings-date-picker input,
+.wc-booking-box-form .product-addon input,
+.wc-booking-box-form .product-addon select,
+.wc-booking-box-form .product-addon textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* تقویم رزرو */
+.wc-booking-box-form .ui-datepicker {
+    direction: ltr;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+/* Checkbox و Radio */
+.wc-booking-box-form input[type="checkbox"],
+.wc-booking-box-form input[type="radio"] {
+    margin-left: 8px;
+    width: auto;
+}
+
+/* گروه‌بندی محصولات */
+.wc-booking-box-form .woocommerce-grouped-product-list {
+    margin: 20px 0;
+}
+
+.wc-booking-box-form .woocommerce-grouped-product-list-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wc-booking-box-container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .wc-booking-box-title {
+        font-size: 20px;
+    }
+
+    .wc-booking-box-price {
+        font-size: 18px;
+    }
+
+    .wc-booking-box-form button.single_add_to_cart_button {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+}
+
+/* افزودنی‌های محصول (Product Add-Ons) */
+.wc-booking-box-form .wc-pao-addons-container {
+    margin: 25px 0;
+}
+
+.wc-booking-box-form .wc-pao-addon {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.wc-booking-box-form .wc-pao-addon:last-child {
+    border-bottom: none;
+}
+
+.wc-booking-box-form .wc-pao-addon-name {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.wc-booking-box-form .wc-pao-addon-description {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* انیمیشن لودینگ */
+.wc-booking-box-form.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.wc-booking-box-form.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
