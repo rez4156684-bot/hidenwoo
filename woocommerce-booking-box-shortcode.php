@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Booking Box Shortcode
  * Plugin URI: https://github.com/yourusername/woocommerce-booking-box-shortcode
  * Description: نمایش فقط باکس رزرو و فیلدهای اضافی محصولات ووکامرس با شورتکد بدون عکس و توضیحات
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Your Name
  * Author URI: https://yourwebsite.com
  * Text Domain: wc-booking-box
@@ -29,7 +29,7 @@ class WC_Booking_Box_Shortcode {
     /**
      * نسخه افزونه
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.0';
 
     /**
      * Instance واحد
@@ -71,6 +71,20 @@ class WC_Booking_Box_Shortcode {
 
         // بارگذاری فایل‌های زبان
         add_action('init', array($this, 'load_textdomain'));
+
+        // فیلتر برای تشخیص استفاده از شورتکد
+        add_filter('woocommerce_is_attribute_in_product_name', array($this, 'detect_shortcode_usage'));
+    }
+
+    /**
+     * تشخیص استفاده از شورتکد در محتوا
+     */
+    public function detect_shortcode_usage($value) {
+        global $post;
+        if ($post && has_shortcode($post->post_content, 'wc_booking_box')) {
+            add_filter('woocommerce_is_single_product', '__return_true');
+        }
+        return $value;
     }
 
     /**
@@ -112,6 +126,32 @@ class WC_Booking_Box_Shortcode {
     }
 
     /**
+     * بارگذاری دستی اسکریپت‌ها و استایل‌های افزونه رزرو شمسی
+     */
+    private function load_shamsi_reserve_assets($product_id) {
+        // فراخوانی مستقیم wp_footer برای افزونه رزرو
+        // با تنظیم موقت $GLOBALS برای گول زدن شرط is_product()
+        global $wp_query;
+
+        // ذخیره حالت قبلی
+        $original_is_singular = $wp_query->is_singular;
+        $original_is_single = $wp_query->is_single;
+
+        // تنظیم موقت برای اجرای افزونه رزرو
+        $wp_query->is_singular = true;
+        $wp_query->is_single = true;
+        $wp_query->queried_object_id = $product_id;
+
+        // فراخوانی تابع افزونه رزرو
+        $shamsi = WC_Shamsi_Reserve::get_instance();
+        $shamsi->enqueue_scripts_and_styles();
+
+        // بازگردانی حالت قبلی
+        $wp_query->is_singular = $original_is_singular;
+        $wp_query->is_single = $original_is_single;
+    }
+
+    /**
      * شورتکد نمایش باکس رزرو
      *
      * استفاده: [wc_booking_box id="123"]
@@ -148,9 +188,15 @@ class WC_Booking_Box_Shortcode {
         // شروع بافر خروجی
         ob_start();
 
-        // تنظیم محصول جاری برای قالب ووکامرس
-        global $product;
+        // ذخیره متغیرهای global قبلی
+        global $product, $post;
+        $original_product = $product;
+        $original_post = $post;
+
+        // تنظیم محصول و post جاری
         $product = wc_get_product($product_id);
+        $post = get_post($product_id);
+        setup_postdata($post);
 
         ?>
         <div class="wc-booking-box-container" data-product-id="<?php echo esc_attr($product_id); ?>">
@@ -180,7 +226,7 @@ class WC_Booking_Box_Shortcode {
 
             <div class="wc-booking-box-form">
                 <?php
-                // نمایش فرم افزودن به سبد خرید
+                // نمایش فرم افزودن به سبد خرید با Hook های کامل
                 if ($product->is_type('simple')) {
                     woocommerce_simple_add_to_cart();
                 } elseif ($product->is_type('variable')) {
@@ -220,7 +266,23 @@ class WC_Booking_Box_Shortcode {
             ?>
 
         </div>
+
         <?php
+        // بارگذاری دستی اسکریپت‌ها و استایل‌های افزونه رزرو شمسی
+        if (class_exists('WC_Shamsi_Reserve')) {
+            $this->load_shamsi_reserve_assets($product_id);
+        }
+        ?>
+        <?php
+
+        // بازگردانی متغیرهای global
+        $product = $original_product;
+        $post = $original_post;
+        if ($original_post) {
+            setup_postdata($original_post);
+        } else {
+            wp_reset_postdata();
+        }
 
         return ob_get_clean();
     }
