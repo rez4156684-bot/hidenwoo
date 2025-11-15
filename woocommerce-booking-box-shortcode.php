@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Booking Box Shortcode
  * Plugin URI: https://github.com/yourusername/woocommerce-booking-box-shortcode
  * Description: نمایش فقط باکس رزرو و فیلدهای اضافی محصولات ووکامرس با شورتکد بدون عکس و توضیحات - با پشتیبانی کامل از تقویم فارسی
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Your Name
  * Author URI: https://yourwebsite.com
  * Text Domain: wc-booking-box
@@ -29,7 +29,7 @@ class WC_Booking_Box_Shortcode {
     /**
      * نسخه افزونه
      */
-    const VERSION = '1.2.0';
+    const VERSION = '1.2.1';
 
     /**
      * Instance واحد
@@ -66,8 +66,8 @@ class WC_Booking_Box_Shortcode {
         // ثبت شورتکد
         add_shortcode('wc_booking_box', array($this, 'booking_box_shortcode'));
 
-        // اضافه کردن استایل‌ها
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+        // اضافه کردن استایل‌ها با اولویت بالا (5) تا قبل از تم بارگذاری شود
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'), 5);
 
         // بارگذاری فایل‌های زبان
         add_action('init', array($this, 'load_textdomain'));
@@ -106,6 +106,33 @@ class WC_Booking_Box_Shortcode {
         global $post;
         $has_shortcode = is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'wc_booking_box');
 
+        // بارگذاری کتابخانه تقویم فارسی همیشه (برای جلوگیری از تداخل با تم)
+        // فقط اگر قبلاً بارگذاری نشده باشد
+        if (!wp_script_is('persian-datepicker', 'enqueued') && !wp_script_is('persian-datepicker', 'registered')) {
+            wp_enqueue_style(
+                'persian-datepicker-css',
+                'https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css',
+                array(),
+                '1.2.0'
+            );
+
+            wp_enqueue_script(
+                'persian-date',
+                'https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js',
+                array('jquery'),
+                '1.1.0',
+                false
+            );
+
+            wp_enqueue_script(
+                'persian-datepicker',
+                'https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js',
+                array('jquery', 'persian-date'),
+                '1.2.0',
+                false
+            );
+        }
+
         if (!$has_shortcode && !is_singular('product')) {
             return;
         }
@@ -120,37 +147,10 @@ class WC_Booking_Box_Shortcode {
         wp_enqueue_script(
             'wc-booking-box-script',
             plugin_dir_url(__FILE__) . 'assets/js/booking-box.js',
-            array('jquery'),
+            array('jquery', 'persian-datepicker'),
             self::VERSION,
             true
         );
-
-        // بارگذاری کتابخانه تقویم فارسی در صورت استفاده از شورتکد
-        if ($has_shortcode) {
-            // بارگذاری Persian Datepicker
-            wp_enqueue_style(
-                'persian-datepicker-css',
-                'https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css',
-                array(),
-                '1.2.0'
-            );
-
-            wp_enqueue_script(
-                'persian-date',
-                'https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js',
-                array('jquery'),
-                '1.1.0',
-                true
-            );
-
-            wp_enqueue_script(
-                'persian-datepicker',
-                'https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js',
-                array('jquery', 'persian-date'),
-                '1.2.0',
-                true
-            );
-        }
     }
 
     /**
