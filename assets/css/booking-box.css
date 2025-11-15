@@ -5,15 +5,24 @@
 
 /* کانتینر اصلی */
 .wc-booking-box-container {
-    max-width: 600px;
+    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
-    padding: 30px;
+    padding: 20px;
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     direction: rtl;
     text-align: right;
+    box-sizing: border-box;
+}
+
+@media (min-width: 769px) {
+    .wc-booking-box-container {
+        max-width: 600px;
+        padding: 30px;
+    }
 }
 
 /* عنوان محصول */
@@ -280,21 +289,34 @@
 /* Responsive */
 @media (max-width: 768px) {
     .wc-booking-box-container {
-        padding: 20px;
-        margin: 10px;
+        padding: 15px;
+        margin: 0;
+        border-radius: 4px;
     }
 
     .wc-booking-box-title {
-        font-size: 20px;
+        font-size: 18px;
+        margin-bottom: 15px;
     }
 
     .wc-booking-box-price {
-        font-size: 18px;
+        font-size: 16px;
+        padding: 10px 0;
     }
 
     .wc-booking-box-form button.single_add_to_cart_button {
-        padding: 12px 25px;
+        padding: 12px 20px;
         font-size: 14px;
+    }
+
+    .wc-booking-box-form .quantity input[type="number"] {
+        width: 80px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .wc-booking-box-form {
+        padding: 15px 0;
     }
 }
 
@@ -324,6 +346,137 @@
     font-size: 13px;
     color: #666;
     margin-bottom: 10px;
+}
+
+/* استایل‌های تقویم فارسی Persian Datepicker */
+.wc-booking-box-form .pdp-wc {
+    z-index: 9999 !important;
+}
+
+.wc-booking-box-form input.shamsi-date-picker,
+.wc-booking-box-form input.booking-date,
+.wc-booking-box-form input[type="text"][name*="date"],
+.wc-booking-box-form input[type="text"][name*="Date"] {
+    width: 100% !important;
+    max-width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.wc-booking-box-form .shamsi-reserve-field,
+.wc-booking-box-form .wc-shamsi-field {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.wc-booking-box-form .shamsi-reserve-field label,
+.wc-booking-box-form .wc-shamsi-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+/* تنظیمات تقویم Persian Datepicker */
+.pdp-wc {
+    font-family: Tahoma, Arial, sans-serif !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.pdp-wc .pdp-header {
+    background: #27ae60 !important;
+}
+
+.pdp-wc .pdp-day.selected {
+    background: #27ae60 !important;
+}
+
+.pdp-wc .pdp-day:hover {
+    background: #d4edda !important;
+    color: #27ae60 !important;
+}
+
+/* استایل‌های فیلدهای رزرو */
+.wc-booking-box-form table.shamsi-reserve-table,
+.wc-booking-box-form .shamsi-reserve-wrapper {
+    width: 100%;
+    margin: 0;
+    border: none;
+}
+
+.wc-booking-box-form table.shamsi-reserve-table td,
+.wc-booking-box-form table.shamsi-reserve-table th {
+    padding: 10px 5px;
+    border: none;
+}
+
+.wc-booking-box-form .form-row {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.wc-booking-box-form .form-row label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.wc-booking-box-form .form-row input[type="text"],
+.wc-booking-box-form .form-row input[type="number"],
+.wc-booking-box-form .form-row select,
+.wc-booking-box-form .form-row textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* رسپانسیو برای موبایل */
+@media (max-width: 480px) {
+    .wc-booking-box-container {
+        padding: 10px;
+        margin: 0;
+    }
+
+    .wc-booking-box-title {
+        font-size: 16px;
+    }
+
+    .wc-booking-box-price {
+        font-size: 14px;
+    }
+
+    .wc-booking-box-form input.shamsi-date-picker,
+    .wc-booking-box-form input.booking-date,
+    .wc-booking-box-form input[type="text"],
+    .wc-booking-box-form select {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .wc-booking-box-form button.single_add_to_cart_button {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+
+    .pdp-wc {
+        width: 100% !important;
+        max-width: 320px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
 }
 
 /* انیمیشن لودینگ */

@@ -194,7 +194,52 @@
     };
 
     /**
-     * پشتیبانی از تقویم فارسی (در صورت نیاز)
+     * راه‌اندازی تقویم فارسی Persian Datepicker
+     */
+    var initPersianDatepicker = function() {
+        // بررسی وجود کتابخانه pDatepicker
+        if (typeof $.fn.pDatepicker === 'undefined') {
+            console.log('Persian Datepicker library not loaded');
+            return;
+        }
+
+        // راه‌اندازی تقویم برای فیلدهای مربوطه
+        $('.wc-booking-box-container').find('input[type="text"].shamsi-date-picker, input[type="text"].booking-date, input[type="text"][name*="date"], input[type="text"][name*="Date"]').each(function() {
+            var $input = $(this);
+
+            // جلوگیری از راه‌اندازی مجدد
+            if ($input.hasClass('pdp-initialized')) {
+                return;
+            }
+
+            try {
+                $input.pDatepicker({
+                    initialValue: false,
+                    format: 'YYYY/MM/DD',
+                    autoClose: true,
+                    calendar: {
+                        persian: {
+                            locale: 'fa'
+                        }
+                    },
+                    observer: true,
+                    altField: $input.data('alt-field') || '',
+                    altFormat: 'YYYY-MM-DD',
+                    onSelect: function(unix) {
+                        $input.trigger('change');
+                    }
+                });
+
+                $input.addClass('pdp-initialized');
+                console.log('Persian Datepicker initialized for:', $input.attr('name'));
+            } catch (e) {
+                console.error('Error initializing Persian Datepicker:', e);
+            }
+        });
+    };
+
+    /**
+     * پشتیبانی از تقویم فارسی (در صورت نیاز) - تنظیمات قدیمی
      */
     if (typeof $.fn.datepicker !== 'undefined') {
         // تنظیمات پیش‌فرض datepicker برای زبان فارسی
@@ -224,6 +269,30 @@
      */
     $(document).ready(function() {
         WCBookingBox.init();
+
+        // راه‌اندازی تقویم فارسی با تاخیر برای اطمینان از بارگذاری کامل
+        setTimeout(function() {
+            initPersianDatepicker();
+        }, 1000);
+
+        // راه‌اندازی مجدد تقویم بعد از تغییر DOM
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length > 0) {
+                    setTimeout(function() {
+                        initPersianDatepicker();
+                    }, 300);
+                }
+            });
+        });
+
+        // مشاهده تغییرات در کانتینر
+        if ($('.wc-booking-box-container').length > 0) {
+            observer.observe($('.wc-booking-box-container')[0], {
+                childList: true,
+                subtree: true
+            });
+        }
     });
 
     /**
@@ -233,6 +302,11 @@
         if ($('.wc-booking-box-container').length > 0) {
             WCBookingBox.initVariations();
             WCBookingBox.initAddons();
+
+            // راه‌اندازی مجدد تقویم فارسی
+            setTimeout(function() {
+                initPersianDatepicker();
+            }, 500);
         }
     });
 

@@ -2,8 +2,8 @@
 /**
  * Plugin Name: WooCommerce Booking Box Shortcode
  * Plugin URI: https://github.com/yourusername/woocommerce-booking-box-shortcode
- * Description: نمایش فقط باکس رزرو و فیلدهای اضافی محصولات ووکامرس با شورتکد بدون عکس و توضیحات
- * Version: 1.1.0
+ * Description: نمایش فقط باکس رزرو و فیلدهای اضافی محصولات ووکامرس با شورتکد بدون عکس و توضیحات - با پشتیبانی کامل از تقویم فارسی
+ * Version: 1.2.0
  * Author: Your Name
  * Author URI: https://yourwebsite.com
  * Text Domain: wc-booking-box
@@ -29,7 +29,7 @@ class WC_Booking_Box_Shortcode {
     /**
      * نسخه افزونه
      */
-    const VERSION = '1.1.0';
+    const VERSION = '1.2.0';
 
     /**
      * Instance واحد
@@ -102,6 +102,14 @@ class WC_Booking_Box_Shortcode {
      * بارگذاری استایل‌ها و اسکریپت‌ها
      */
     public function enqueue_scripts() {
+        // بررسی استفاده از شورتکد در صفحه
+        global $post;
+        $has_shortcode = is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'wc_booking_box');
+
+        if (!$has_shortcode && !is_singular('product')) {
+            return;
+        }
+
         wp_enqueue_style(
             'wc-booking-box-style',
             plugin_dir_url(__FILE__) . 'assets/css/booking-box.css',
@@ -116,6 +124,33 @@ class WC_Booking_Box_Shortcode {
             self::VERSION,
             true
         );
+
+        // بارگذاری کتابخانه تقویم فارسی در صورت استفاده از شورتکد
+        if ($has_shortcode) {
+            // بارگذاری Persian Datepicker
+            wp_enqueue_style(
+                'persian-datepicker-css',
+                'https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css',
+                array(),
+                '1.2.0'
+            );
+
+            wp_enqueue_script(
+                'persian-date',
+                'https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js',
+                array('jquery'),
+                '1.1.0',
+                true
+            );
+
+            wp_enqueue_script(
+                'persian-datepicker',
+                'https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js',
+                array('jquery', 'persian-date'),
+                '1.2.0',
+                true
+            );
+        }
     }
 
     /**
@@ -131,11 +166,12 @@ class WC_Booking_Box_Shortcode {
     private function load_shamsi_reserve_assets($product_id) {
         // فراخوانی مستقیم wp_footer برای افزونه رزرو
         // با تنظیم موقت $GLOBALS برای گول زدن شرط is_product()
-        global $wp_query;
+        global $wp_query, $post;
 
         // ذخیره حالت قبلی
         $original_is_singular = $wp_query->is_singular;
         $original_is_single = $wp_query->is_single;
+        $original_queried_object_id = $wp_query->queried_object_id;
 
         // تنظیم موقت برای اجرای افزونه رزرو
         $wp_query->is_singular = true;
@@ -143,12 +179,47 @@ class WC_Booking_Box_Shortcode {
         $wp_query->queried_object_id = $product_id;
 
         // فراخوانی تابع افزونه رزرو
-        $shamsi = WC_Shamsi_Reserve::get_instance();
-        $shamsi->enqueue_scripts_and_styles();
+        if (class_exists('WC_Shamsi_Reserve') && method_exists('WC_Shamsi_Reserve', 'get_instance')) {
+            $shamsi = WC_Shamsi_Reserve::get_instance();
+            if (method_exists($shamsi, 'enqueue_scripts_and_styles')) {
+                $shamsi->enqueue_scripts_and_styles();
+            }
+        }
 
         // بازگردانی حالت قبلی
         $wp_query->is_singular = $original_is_singular;
         $wp_query->is_single = $original_is_single;
+        $wp_query->queried_object_id = $original_queried_object_id;
+
+        // اضافه کردن اسکریپت راه‌اندازی تقویم فارسی
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // راه‌اندازی تقویم فارسی برای فیلدهای رزرو
+            setTimeout(function() {
+                if (typeof $.fn.pDatepicker !== 'undefined') {
+                    $('.wc-booking-box-container input[type="text"].booking-date, .wc-booking-box-container .shamsi-date-picker').each(function() {
+                        if (!$(this).hasClass('hasDatepicker')) {
+                            $(this).pDatepicker({
+                                initialValue: false,
+                                format: 'YYYY/MM/DD',
+                                autoClose: true,
+                                calendar: {
+                                    persian: {
+                                        locale: 'fa'
+                                    }
+                                },
+                                observer: true,
+                                altField: $(this).data('alt-field') || '',
+                                altFormat: 'YYYY-MM-DD'
+                            });
+                        }
+                    });
+                }
+            }, 500);
+        });
+        </script>
+        <?php
     }
 
     /**
