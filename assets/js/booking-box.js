@@ -237,3 +237,144 @@
     });
 
 })(jQuery);
+
+/**
+ * توابع مدیریت پاپ‌آپ رزرو شمسی
+ */
+
+/**
+ * باز کردن پاپ‌آپ رزرو
+ * @param {number} productId - شناسه محصول
+ */
+function wcOpenReservePopup(productId) {
+    var popupId = 'wc-reserve-popup-' + productId;
+    var popup = document.getElementById(popupId);
+
+    if (popup) {
+        // نمایش پاپ‌آپ
+        popup.style.display = 'flex';
+
+        // غیرفعال کردن اسکرول بدنه
+        document.body.style.overflow = 'hidden';
+
+        // افزودن رویداد کلیک روی overlay برای بستن
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                wcCloseReservePopup(productId);
+            }
+        });
+
+        // افزودن رویداد کلید ESC برای بستن
+        document.addEventListener('keydown', function escHandler(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                wcCloseReservePopup(productId);
+                document.removeEventListener('keydown', escHandler);
+            }
+        });
+
+        // فوکوس روی اولین فیلد ورودی
+        setTimeout(function() {
+            var firstInput = popup.querySelector('input:not([type="hidden"]), select, textarea');
+            if (firstInput) {
+                firstInput.focus();
+            }
+        }, 300);
+
+        // Trigger رویداد سفارشی
+        if (typeof jQuery !== 'undefined') {
+            jQuery(document).trigger('wc_reserve_popup_opened', [productId]);
+        }
+    }
+}
+
+/**
+ * بستن پاپ‌آپ رزرو
+ * @param {number} productId - شناسه محصول
+ */
+function wcCloseReservePopup(productId) {
+    var popupId = 'wc-reserve-popup-' + productId;
+    var popup = document.getElementById(popupId);
+
+    if (popup) {
+        // اضافه کردن کلاس انیمیشن بستن
+        popup.classList.add('closing');
+
+        // بستن بعد از انیمیشن
+        setTimeout(function() {
+            popup.style.display = 'none';
+            popup.classList.remove('closing');
+
+            // فعال کردن اسکرول بدنه
+            document.body.style.overflow = '';
+
+            // Trigger رویداد سفارشی
+            if (typeof jQuery !== 'undefined') {
+                jQuery(document).trigger('wc_reserve_popup_closed', [productId]);
+            }
+        }, 300);
+    }
+}
+
+/**
+ * رفتار بعد از افزودن موفق به سبد خرید
+ */
+(function($) {
+    $(document).on('added_to_cart', function(event, fragments, cart_hash, button) {
+        // پیدا کردن پاپ‌آپ باز
+        var openPopup = document.querySelector('.wc-reserve-popup-overlay[style*="display: flex"]');
+
+        if (openPopup) {
+            var productId = openPopup.id.replace('wc-reserve-popup-', '');
+
+            // نمایش پیام موفقیت
+            var successMessage = document.createElement('div');
+            successMessage.className = 'wc-reserve-success-message';
+            successMessage.innerHTML = '✓ محصول با موفقیت به سبد خرید اضافه شد!';
+            successMessage.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #27ae60; color: white; padding: 15px 25px; border-radius: 8px; z-index: 9999999; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: slideInRight 0.3s ease;';
+
+            document.body.appendChild(successMessage);
+
+            // حذف پیام بعد از 3 ثانیه
+            setTimeout(function() {
+                successMessage.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(function() {
+                    document.body.removeChild(successMessage);
+                }, 300);
+            }, 3000);
+
+            // بستن پاپ‌آپ بعد از 2 ثانیه
+            setTimeout(function() {
+                wcCloseReservePopup(productId);
+            }, 2000);
+        }
+    });
+
+    // اضافه کردن استایل‌های انیمیشن
+    if (!document.getElementById('wc-reserve-popup-animations')) {
+        var style = document.createElement('style');
+        style.id = 'wc-reserve-popup-animations';
+        style.innerHTML = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+})(jQuery);

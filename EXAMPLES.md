@@ -5,11 +5,12 @@
 ## 📋 فهرست مطالب
 
 1. [استفاده پایه](#استفاده-پایه)
-2. [محصولات رزرو](#محصولات-رزرو)
-3. [محصولات با افزودنی](#محصولات-با-افزودنی)
-4. [صفحات رزرو سریع](#صفحات-رزرو-سریع)
-5. [یکپارچه‌سازی با افزونه‌ها](#یکپارچه‌سازی-با-افزونه‌ها)
-6. [سفارشی‌سازی پیشرفته](#سفارشی‌سازی-پیشرفته)
+2. [پاپ‌آپ رزرو شمسی](#پاپ‌آپ-رزرو-شمسی)
+3. [محصولات رزرو](#محصولات-رزرو)
+4. [محصولات با افزودنی](#محصولات-با-افزودنی)
+5. [صفحات رزرو سریع](#صفحات-رزرو-سریع)
+6. [یکپارچه‌سازی با افزونه‌ها](#یکپارچه‌سازی-با-افزونه‌ها)
+7. [سفارشی‌سازی پیشرفته](#سفارشی‌سازی-پیشرفته)
 
 ---
 
@@ -52,6 +53,266 @@
 ```
 
 **کاربرد:** فقط فرم رزرو، بدون هیچ اطلاعات اضافی
+
+---
+
+## پاپ‌آپ رزرو شمسی
+
+### استفاده ساده از پاپ‌آپ
+
+```
+[wc_shamsi_reserve_popup id="100"]
+```
+
+**کاربرد:** نمایش دکمه "رزرو" که با کلیک روی آن، پاپ‌آپ رزرو باز می‌شود
+
+**ویژگی‌ها:**
+- ✅ دکمه رزرو با طراحی مدرن و زیبا
+- ✅ پاپ‌آپ تمام صفحه با انیمیشن نرم
+- ✅ فرم رزرو کامل داخل پاپ‌آپ
+- ✅ امکان بستن با کلیک روی overlay یا دکمه ESC
+- ✅ پیام موفقیت بعد از افزودن به سبد خرید
+- ✅ بسته شدن خودکار بعد از رزرو موفق
+
+---
+
+### تغییر متن دکمه
+
+```
+[wc_shamsi_reserve_popup id="100" button_text="رزرو کنید"]
+```
+
+**کاربرد:** تغییر متن دکمه رزرو به دلخواه
+
+**نمونه‌های متن:**
+- "رزرو آنلاین"
+- "همین الان رزرو کنید"
+- "ثبت درخواست"
+- "دریافت نوبت"
+
+---
+
+### سفارشی‌سازی کلاس دکمه
+
+```
+[wc_shamsi_reserve_popup id="100" button_text="رزرو فوری" button_class="my-custom-btn"]
+```
+
+**کاربرد:** اضافه کردن کلاس CSS سفارشی به دکمه
+
+**نمونه CSS:**
+
+```css
+.my-custom-btn {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    padding: 20px 50px;
+    font-size: 20px;
+    border-radius: 50px;
+}
+
+.my-custom-btn:hover {
+    box-shadow: 0 10px 30px rgba(245, 87, 108, 0.5);
+}
+```
+
+---
+
+### استفاده در صفحات مختلف
+
+#### در صفحه اصلی (Home Page)
+
+```html
+<section class="hero-section">
+    <h1>سالن زیبایی آرایش</h1>
+    <p>بهترین خدمات زیبایی را با ما تجربه کنید</p>
+    [wc_shamsi_reserve_popup id="100" button_text="رزرو آنلاین"]
+</section>
+```
+
+#### در صفحه محصول
+
+```html
+<div class="product-cta">
+    <h3>برای رزرو این محصول کلیک کنید</h3>
+    [wc_shamsi_reserve_popup id="201"]
+</div>
+```
+
+#### در سایدبار
+
+```php
+// در ویجت سایدبار
+<?php echo do_shortcode('[wc_shamsi_reserve_popup id="100" button_text="رزرو"]'); ?>
+```
+
+---
+
+### چند دکمه برای محصولات مختلف
+
+```html
+<div class="services-grid">
+    <div class="service-item">
+        <h3>کوتاهی مو</h3>
+        <p>قیمت: 100,000 تومان</p>
+        [wc_shamsi_reserve_popup id="301" button_text="رزرو کوتاهی"]
+    </div>
+
+    <div class="service-item">
+        <h3>رنگ مو</h3>
+        <p>قیمت: 300,000 تومان</p>
+        [wc_shamsi_reserve_popup id="302" button_text="رزرو رنگ مو"]
+    </div>
+
+    <div class="service-item">
+        <h3>میکاپ</h3>
+        <p>قیمت: 200,000 تومان</p>
+        [wc_shamsi_reserve_popup id="303" button_text="رزرو میکاپ"]
+    </div>
+</div>
+```
+
+---
+
+### استفاده در Landing Page
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>رزرو آنلاین</title>
+    <style>
+        body {
+            font-family: 'Vazir', Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 پیشنهاد ویژه امروز</h1>
+        <p>با رزرو امروز، 30% تخفیف بگیرید!</p>
+        [wc_shamsi_reserve_popup id="100" button_text="همین الان رزرو کن"]
+    </div>
+</body>
+</html>
+```
+
+---
+
+### یکپارچه‌سازی با افزونه رزرو شمسی
+
+```
+[wc_shamsi_reserve_popup id="100"]
+```
+
+**قابلیت‌های خودکار:**
+- ✅ تشخیص خودکار افزونه رزرو شمسی
+- ✅ نمایش تقویم شمسی فارسی
+- ✅ فیلدهای تاریخ و ساعت
+- ✅ محاسبه خودکار قیمت
+- ✅ بارگذاری خودکار اسکریپت‌ها و استایل‌های افزونه
+
+---
+
+### پاپ‌آپ با چندین محصول
+
+```html
+<div class="products-list">
+    <table class="products-table">
+        <tr>
+            <td>رزرو اتاق یک تخته</td>
+            <td>500,000 تومان</td>
+            <td>[wc_shamsi_reserve_popup id="401" button_text="رزرو"]</td>
+        </tr>
+        <tr>
+            <td>رزرو اتاق دو تخته</td>
+            <td>700,000 تومان</td>
+            <td>[wc_shamsi_reserve_popup id="402" button_text="رزرو"]</td>
+        </tr>
+        <tr>
+            <td>رزرو سوئیت</td>
+            <td>1,200,000 تومان</td>
+            <td>[wc_shamsi_reserve_popup id="403" button_text="رزرو"]</td>
+        </tr>
+    </table>
+</div>
+```
+
+---
+
+### استایل دکمه‌های مختلف
+
+```html
+<!-- دکمه استاندارد (پیش‌فرض) -->
+[wc_shamsi_reserve_popup id="100"]
+
+<!-- دکمه با رنگ سفارشی -->
+<style>
+.custom-green-btn {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+</style>
+[wc_shamsi_reserve_popup id="100" button_class="custom-green-btn"]
+
+<!-- دکمه با شکل دایره‌ای -->
+<style>
+.round-btn {
+    border-radius: 50px;
+    padding: 15px 45px;
+}
+</style>
+[wc_shamsi_reserve_popup id="100" button_class="round-btn"]
+
+<!-- دکمه بزرگ برای موبایل -->
+<style>
+.mobile-reserve-btn {
+    width: 100%;
+    padding: 20px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+</style>
+[wc_shamsi_reserve_popup id="100" button_class="mobile-reserve-btn" button_text="رزرو موبایلی"]
+```
+
+---
+
+### نکات مهم پاپ‌آپ
+
+1. **کلیدهای میانبر:**
+   - فشردن `ESC` برای بستن پاپ‌آپ
+   - کلیک روی پس‌زمینه تیره برای بستن
+
+2. **رفتار بعد از رزرو:**
+   - نمایش پیام موفقیت در بالای صفحه
+   - بسته شدن خودکار پاپ‌آپ بعد از 2 ثانیه
+   - امکان بستن دستی با دکمه × در بالای پاپ‌آپ
+
+3. **سازگاری:**
+   - ✅ کاملاً ریسپانسیو
+   - ✅ سازگار با موبایل و تبلت
+   - ✅ پشتیبانی از RTL و فارسی
+   - ✅ سازگار با تمام مرورگرها
+
+4. **امنیت:**
+   - ✅ غیرفعال کردن اسکرول صفحه هنگام باز بودن پاپ‌آپ
+   - ✅ فوکوس خودکار روی اولین فیلد
+   - ✅ جلوگیری از باز شدن چند پاپ‌آپ همزمان
 
 ---
 

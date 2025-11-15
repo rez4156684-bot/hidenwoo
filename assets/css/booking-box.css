@@ -350,3 +350,230 @@
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+/* ===================================
+   استایل‌های پاپ‌آپ رزرو شمسی
+   =================================== */
+
+/* دکمه رزرو */
+.wc-shamsi-reserve-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    text-align: center;
+}
+
+.wc-shamsi-reserve-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.wc-shamsi-reserve-btn:active {
+    transform: translateY(0);
+}
+
+/* Overlay پاپ‌آپ */
+.wc-reserve-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* کانتینر پاپ‌آپ */
+.wc-reserve-popup-container {
+    background: #ffffff;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    position: relative;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* هدر پاپ‌آپ */
+.wc-reserve-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 2px solid #f0f0f0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px 12px 0 0;
+}
+
+.wc-reserve-popup-title {
+    margin: 0;
+    padding: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    direction: rtl;
+    text-align: right;
+}
+
+/* دکمه بستن */
+.wc-reserve-popup-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 300;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.wc-reserve-popup-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* محتوای پاپ‌آپ */
+.wc-reserve-popup-content {
+    padding: 30px;
+    direction: rtl;
+    text-align: right;
+}
+
+.wc-reserve-popup-content .wc-booking-box-form {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+/* تنظیمات فرم داخل پاپ‌آپ */
+.wc-reserve-popup-content form.cart {
+    margin: 0;
+}
+
+.wc-reserve-popup-content .quantity,
+.wc-reserve-popup-content .variations {
+    margin-bottom: 20px;
+}
+
+/* اسکرول‌بار سفارشی برای پاپ‌آپ */
+.wc-reserve-popup-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.wc-reserve-popup-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.wc-reserve-popup-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.wc-reserve-popup-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive برای موبایل */
+@media (max-width: 768px) {
+    .wc-reserve-popup-container {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .wc-reserve-popup-header {
+        padding: 15px 20px;
+    }
+
+    .wc-reserve-popup-title {
+        font-size: 18px;
+    }
+
+    .wc-reserve-popup-content {
+        padding: 20px;
+    }
+
+    .wc-shamsi-reserve-btn {
+        padding: 12px 30px;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .wc-reserve-popup-close {
+        width: 35px;
+        height: 35px;
+        font-size: 28px;
+    }
+}
+
+/* انیمیشن بستن پاپ‌آپ */
+.wc-reserve-popup-overlay.closing {
+    animation: fadeOut 0.3s ease;
+}
+
+.wc-reserve-popup-overlay.closing .wc-reserve-popup-container {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+}
